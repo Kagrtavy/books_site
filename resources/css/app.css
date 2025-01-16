@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.book-card {
+    width: 215px;
+    height: 323px;
+}
