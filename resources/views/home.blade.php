@@ -11,7 +11,7 @@
                 <div class="grid grid-cols-5 gap-4">
                     @foreach ($publications as $publication)
                         <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg shadow-md book-card">
-                            <img src="{{ asset('storage/' . $publication->photo) }}"
+                            <img src="{{ asset('storage' . DIRECTORY_SEPARATOR . $publication->photo) }}"
                                  alt="{{ $publication->name }}"
                                  class="w-full h-48 object-cover rounded-md book-cover">
                             <h3 class="mt-4 text-sm font-semibold text-gray-800 dark:text-gray-200">
