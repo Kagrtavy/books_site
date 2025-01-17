@@ -11,6 +11,6 @@ class HomeController extends Controller
     {
         $publications = Publication::with('rating')->inRandomOrder()->limit(10)->get();
 
-        return view('home', compact('publications'));
+        return view('home', ['publications' => $publications]);
     }
 }
