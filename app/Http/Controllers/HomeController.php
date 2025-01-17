@@ -9,7 +9,6 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // Отримання 8 випадкових книг
         $publications = Publication::with('rating')->inRandomOrder()->limit(10)->get();
 
         return view('home', compact('publications'));

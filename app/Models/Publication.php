@@ -15,7 +15,6 @@ class Publication extends Model
         'status', 'size', 'description'
     ];
 
-    // Зв'язок із таблицею ratings
     public function rating()
     {
         return $this->belongsTo(Rating::class);

@@ -11,7 +11,6 @@ class Rating extends Model
 
     protected $fillable = ['name', 'description'];
 
-    // Зв'язок із таблицею publications
     public function publications()
     {
         return $this->hasMany(Publication::class);
