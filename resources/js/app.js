@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Для поля Type
+    // for Type
     const typeSelect = document.getElementById('type');
     const sourceWrapper = document.getElementById('source-wrapper');
     typeSelect.addEventListener('change', function () {
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     toggleFields(typeSelect, 'Based on', [sourceWrapper]);
 
-    // Для поля Authorship
+    // for Authorship
     const authorshipSelect = document.getElementById('authorship');
     const authorWrapper = document.getElementById('author-wrapper');
     const workLinkWrapper = document.getElementById('work-link-wrapper');
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     toggleFields(authorshipSelect, 'Translation', [authorWrapper, workLinkWrapper]);
 
-    // Для нового джерела (New Source)
+    // for New Source
     const sourceSelect = document.getElementById('source_id');
     const newSourceWrapper = document.getElementById('new-source-wrapper');
     sourceSelect.addEventListener('change', function () {
@@ -41,6 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
     toggleFields(sourceSelect, 'new', [newSourceWrapper]);
 });
 
+// show photo
 document.addEventListener('DOMContentLoaded', function () {
     const photoInput = document.getElementById('photo');
     const photoPreview = document.getElementById('photo-preview-img');
