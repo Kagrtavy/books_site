@@ -8,3 +8,8 @@
 .book-cover {
     height: 240px;
 }
+.preview-image {
+    width: 194px;
+    height: 310px;
+    object-fit: cover;
+}
