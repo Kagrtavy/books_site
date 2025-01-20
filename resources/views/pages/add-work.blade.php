@@ -14,7 +14,7 @@
                     <!-- Name -->
                     <div class="mb-4">
                         <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
-                        <input type="text" name="name" id="name" maxlength="100" required
+                        <input type="text" name="name" id="name" maxlength="100"
                                class="mt-1 block w-full rounded-md shadow-sm border-gray-300 dark:border-gray-600 dark:bg-gray-700">
                     </div>
 
@@ -42,12 +42,20 @@
                     <!-- Source -->
                     <div class="mb-4" id="source-wrapper" style="display: none;">
                         <label for="source_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Source</label>
-                        <select name="source_id" id="source_id" required
+                        <select name="source_id" id="source_id"
                                 class="mt-1 block w-full rounded-md shadow-sm border-gray-300 dark:border-gray-600 dark:bg-gray-700">
                             @foreach ($sources as $source)
                                 <option value="{{ $source->id }}">{{ $source->name }}</option>
                             @endforeach
+                            <option value="new">Other (Enter a new source)</option>
                         </select>
+                    </div>
+
+                    <!-- New Source -->
+                    <div class="mb-4" id="new-source-wrapper" style="display: none;">
+                        <label for="new_source" class="block text-sm font-medium text-gray-700 dark:text-gray-300">New Source</label>
+                        <input type="text" name="new_source" id="new_source"
+                               class="mt-1 block w-full rounded-md shadow-sm border-gray-300 dark:border-gray-600 dark:bg-gray-700">
                     </div>
 
                     <!-- Authorship -->
