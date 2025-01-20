@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\WorkController;
+use App\Http\Controllers\ChapterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,3 +30,11 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/works/create', [WorkController::class, 'create'])->name('works.create');
+    Route::post('/works', [WorkController::class, 'store'])->name('works.store');
+
+    Route::get('/works/{work}/chapters/create', [ChapterController::class, 'create'])->name('chapters.create');
+    Route::post('/works/{work}/chapters', [ChapterController::class, 'store'])->name('chapters.store');
+});
