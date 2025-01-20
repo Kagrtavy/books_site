@@ -10,7 +10,9 @@ class ChapterController extends Controller
 {
     public function create(Publication $work)
     {
-        return view('chapters.create', compact('work'));
+        $chapters = $work->chapters;
+
+        return view('pages.add-chapter', compact('work', 'chapters'));
     }
 
     public function store(Request $request, Publication $work)

@@ -11,6 +11,8 @@ class Source extends Model
 
     protected $fillable = ['name'];
 
+    public $timestamps = false;
+
     public function publications()
     {
         return $this->hasMany(Publication::class);

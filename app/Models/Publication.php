@@ -19,4 +19,9 @@ class Publication extends Model
     {
         return $this->belongsTo(Rating::class);
     }
+
+    public function chapters()
+    {
+        return $this->hasMany(Chapter::class);
+    }
 }
