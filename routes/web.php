@@ -38,3 +38,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/works/{work}/chapters/create', [ChapterController::class, 'create'])->name('chapters.create');
     Route::post('/works/{work}/chapters', [ChapterController::class, 'store'])->name('chapters.store');
 });
+
+Route::get('/works/{work}', [WorkController::class, 'show'])->name('works.show');
