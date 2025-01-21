@@ -24,4 +24,8 @@ class Publication extends Model
     {
         return $this->hasMany(Chapter::class);
     }
+    public function genres()
+    {
+        return $this->belongsToMany(Genre::class, 'genre_publication');
+    }
 }
