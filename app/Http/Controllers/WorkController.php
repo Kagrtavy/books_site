@@ -15,22 +15,23 @@ class WorkController extends Controller
         $sources = Source::all();
         $ratings = Rating::all();
         $genres = Genre::all();
-        return view('pages.add-work', compact('sources', 'ratings', 'genres'));
+        return view('pages.add-work', [
+            'sources' => $sources,
+            'ratings' => $ratings,
+            'genres' => $genres
+        ]);
     }
 
     public function show(Publication $work)
     {
-        return view('pages.work', compact('work'));
+        return view('pages.work', [
+            'work' => $work
+        ]);
     }
 
     public function store(Request $request)
     {
-        if (is_string($request->genres)) {
-            $request->merge([
-                'genres' => json_decode($request->genres, true),
-            ]);
-        }
-
+        $this->handleGenres($request);
         $validated = $request->validate([
             'name' => 'required|string|max:100',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -46,35 +47,48 @@ class WorkController extends Controller
             'size' => 'required|in:min,mid,max',
             'description' => 'nullable|string',
         ]);
+        $this->handleSource($validated);
+        $this->handlePhoto($request, $validated);
+        $validated['user_id'] = auth()->id();
+        $work = Publication::create($validated);
+        if ($request->has('genres')) {
+            $work->genres()->attach($validated['genres']);
+        }
+        $this->createWorkDirectory($work->name);
+        return redirect()->route('chapters.create', $work);
+    }
 
+    protected function handleGenres(Request $request)
+    {
+        if (is_string($request->genres)) {
+            $request->merge([
+                'genres' => json_decode($request->genres, true),
+            ]);
+        }
+    }
+
+    private function handleSource(array &$validated)
+    {
         if ($validated['source_id'] === 'new' && !empty($validated['new_source'])) {
             $source = Source::create(['name' => $validated['new_source']]);
             $validated['source_id'] = $source->id;
         }
+    }
 
-        if (empty($validated['source_id'])) {
-            return back()->withErrors(['source_id' => 'Please select or add a source.'])->withInput();
-        }
-
+    private function handlePhoto(Request $request, array &$validated)
+    {
         if ($request->hasFile('photo')) {
             $validated['photo'] = $request->file('photo')->store('images/bookCovers', 'public');
         } else {
             $validated['photo'] = 'images/defaultCover/default.jpg';
         }
+    }
 
-        $validated['user_id'] = auth()->id();
-
-        $work = Publication::create($validated);
-
-        if ($request->has('genres')) {
-            $work->genres()->attach($validated['genres']);
-        }
-
-        $workDirectory = storage_path('app/public/works/' . $work->name);
+    private function createWorkDirectory(string $workName)
+    {
+        $workDirectory = storage_path('app/public/works/' . $workName);
         if (!file_exists($workDirectory)) {
             mkdir($workDirectory, 0755, true);
         }
-
-        return redirect()->route('chapters.create', $work);
     }
 }

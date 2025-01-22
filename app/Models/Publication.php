@@ -32,5 +32,8 @@ class Publication extends Model
     {
         return $this->belongsTo(Source::class);
     }
-
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

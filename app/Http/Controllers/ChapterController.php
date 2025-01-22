@@ -6,6 +6,7 @@ use App\Models\Chapter;
 use App\Models\Publication;
 use Illuminate\Http\Request;
 use PhpOffice\PhpWord\IOFactory;
+use Illuminate\Http\UploadedFile;
 
 class ChapterController extends Controller
 {
@@ -13,7 +14,10 @@ class ChapterController extends Controller
     {
         $chapters = $work->chapters;
 
-        return view('pages.add-chapter', compact('work', 'chapters'));
+        return view('pages.add-chapter', [
+            'work' => $work,
+            'chapters' => $chapters,
+        ]);
     }
 
     public function store(Request $request, Publication $work)
@@ -22,11 +26,8 @@ class ChapterController extends Controller
             'name' => 'required|string|max:100',
             'file' => 'required|mimes:docx|max:10240',
         ]);
-        $cleanedName = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $validated['name']);
-        $fileExtension = $request->file('file')->getClientOriginalExtension();
-        $fileName = $cleanedName . '.' . $fileExtension;
-        $chapterDirectory = 'works/' . $work->name;
-        $filePath = $request->file('file')->storeAs($chapterDirectory, $fileName, 'public');
+        $fileName = $this->generateFileName($validated['name'], $request->file('file'));
+        $filePath = $this->saveChapterFile($request->file('file'), $fileName, $work->name);
         Chapter::create([
             'name' => $validated['name'],
             'text' => $filePath,
@@ -38,14 +39,30 @@ class ChapterController extends Controller
     public function show(Chapter $chapter)
     {
         $filePath = storage_path('app/public/' . $chapter->text);
+        $text = $this->getChapterText($filePath);
+        return view('pages.chapter-text', [
+            'chapter' => $chapter,
+            'text' => $text
+        ]);
+    }
 
-        if (!file_exists($filePath)) {
-            abort(404, 'Chapter file not found.');
-        }
+    function generateFileName(string $originalName, UploadedFile $file): string
+    {
+        $cleanedName = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $originalName);
+        $fileExtension = $file->getClientOriginalExtension();
+        return $cleanedName . '.' . $fileExtension;
+    }
 
+    protected function saveChapterFile(UploadedFile $file, string $fileName, string $workName): string
+    {
+        $chapterDirectory = 'works/' . $workName;
+        return $file->storeAs($chapterDirectory, $fileName, 'public');
+    }
+
+    protected function getChapterText(string $filePath): string
+    {
         $phpWord = IOFactory::load($filePath);
         $text = '';
-
         foreach ($phpWord->getSections() as $section) {
             foreach ($section->getElements() as $element) {
                 if (method_exists($element, 'getText')) {
@@ -53,7 +70,6 @@ class ChapterController extends Controller
                 }
             }
         }
-
-        return view('pages.chapter-text', ['chapter' => $chapter, 'text' => $text]);
+        return $text;
     }
 }
