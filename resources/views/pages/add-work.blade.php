@@ -93,7 +93,7 @@
                                 @endforeach
                             </div>
                         </div>
-                        <!-- Сховане поле для передачі жанрів -->
+                        <!-- Hidden field for genre transfer -->
                         <input type="hidden" name="genres" id="selected-genre-ids" value="[]">
                     </div>
 

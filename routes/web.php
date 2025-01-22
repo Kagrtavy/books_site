@@ -40,3 +40,6 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::get('/works/{work}', [WorkController::class, 'show'])->name('works.show');
+
+Route::get('/chapter/{chapter}', [ChapterController::class, 'show'])->name('chapter.show');
+

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Chapter;
 use App\Models\Publication;
 use Illuminate\Http\Request;
+use PhpOffice\PhpWord\IOFactory;
 
 class ChapterController extends Controller
 {
@@ -32,5 +33,27 @@ class ChapterController extends Controller
             'publication_id' => $work->id,
         ]);
         return redirect()->route('chapters.create', $work);
+    }
+
+    public function show(Chapter $chapter)
+    {
+        $filePath = storage_path('app/public/' . $chapter->text);
+
+        if (!file_exists($filePath)) {
+            abort(404, 'Chapter file not found.');
+        }
+
+        $phpWord = IOFactory::load($filePath);
+        $text = '';
+
+        foreach ($phpWord->getSections() as $section) {
+            foreach ($section->getElements() as $element) {
+                if (method_exists($element, 'getText')) {
+                    $text .= $element->getText() . "\n";
+                }
+            }
+        }
+
+        return view('pages.chapter-text', ['chapter' => $chapter, 'text' => $text]);
     }
 }
