@@ -20,6 +20,11 @@
                 <div class="flex flex-col md:flex-row items-start gap-6">
                     <div class="flex-1">
                         <ul class="list-none space-y-2">
+                            <li><strong>Added by:</strong>
+                                <span class="text-gray-800 dark:text-gray-200">
+                                    {{ $work->user->name ?? 'Unknown User' }}
+                                </span>
+                            </li>
                             <li><strong>Type:</strong> {{ $work->type }}</li>
                             @if ($work->type === 'Based on' && $work->source)
                                 <li><strong>Source:</strong> {{ $work->source->name }}</li>
