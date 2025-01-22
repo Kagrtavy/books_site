@@ -28,4 +28,9 @@ class Publication extends Model
     {
         return $this->belongsToMany(Genre::class, 'genre_publication');
     }
+    public function source()
+    {
+        return $this->belongsTo(Source::class);
+    }
+
 }
