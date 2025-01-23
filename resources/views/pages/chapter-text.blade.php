@@ -1,4 +1,4 @@
-<x-app-layout :title="$chapter->title">
+<x-app-layout :title="$chapter->name">
     <!-- Back Button -->
     <div class="mt-4 max-w-7xl mx-auto sm:px-6 lg:px-8">
         <a href="{{ url()->previous() }}"

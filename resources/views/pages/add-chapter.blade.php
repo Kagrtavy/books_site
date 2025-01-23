@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout :title="'Add Chapters | ' . $work->name">
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Add Chapters for: ') . $work->name }}
@@ -23,15 +23,21 @@
                     <!-- Name -->
                     <div class="mb-4">
                         <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Chapter Name</label>
-                        <input type="text" name="name" id="name" required
+                        <input type="text" name="name" id="name"
                                class="mt-1 block w-full rounded-md shadow-sm border-gray-300 dark:border-gray-600 dark:bg-gray-700">
+                        @error('name')
+                        <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <!-- .docx -->
                     <div class="mb-4">
                         <label for="file" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Upload Chapter (.docx)</label>
-                        <input type="file" name="file" id="file" accept=".docx" required
+                        <input type="file" name="file" id="file" accept=".docx"
                                class="mt-1 block w-full rounded-md shadow-sm border-gray-300 dark:border-gray-600 dark:bg-gray-700">
+                        @error('file')
+                        <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <!-- Save -->
