@@ -24,18 +24,31 @@
                         <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
                         <input type="text" name="name" id="name" maxlength="100"
                                class="mt-1 block w-full rounded-md shadow-sm border-gray-300 dark:border-gray-600 dark:bg-gray-700">
+                        @error('name')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <!-- Photo -->
                     <div class="mb-4">
                         <label for="photo" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Photo</label>
-                        <input type="file" name="photo" id="photo" accept="image/*"
-                               class="mt-1 block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:border-gray-300 dark:file:border-gray-600 file:bg-gray-100 dark:file:bg-gray-700">
-                        <!-- Попередній перегляд -->
+                        <div class="flex items-center gap-4">
+                            <input type="file" name="photo" id="photo" accept="image/*"
+                                   class="mt-1 block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:border-gray-300 dark:file:border-gray-600 file:bg-gray-100 dark:file:bg-gray-700">
+                            <button type="button" id="clear-photo"
+                                    class="px-3 py-2 bg-red-500 text-white rounded-md shadow-sm hover:bg-red-600">
+                                Clear
+                            </button>
+                        </div>
+                        <!-- Preview -->
                         <div id="photo-preview" class="mt-4">
                             <img src="" alt="Preview" class="rounded-md shadow-md hidden preview-image" id="photo-preview-img">
                         </div>
+                        @error('photo')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
+
 
                     <!-- Type -->
                     <div class="mb-4">
@@ -45,6 +58,9 @@
                             <option value="Original work">Original work</option>
                             <option value="Based on">Based on</option>
                         </select>
+                        @error('type')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <!-- Source -->
@@ -57,6 +73,9 @@
                             @endforeach
                             <option value="new">Other (Enter a new source)</option>
                         </select>
+                        @error('source_id')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <!-- New Source -->
@@ -66,14 +85,14 @@
                                class="mt-1 block w-full rounded-md shadow-sm border-gray-300 dark:border-gray-600 dark:bg-gray-700">
                     </div>
 
-                    <!-- Поле вибору жанрів -->
+                    <!-- Genre selection field -->
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                             Select Genres
                         </label>
                         <div class="border border-gray-300 dark:border-gray-600 rounded-md p-2">
                             <div id="selected-genres" class="flex flex-wrap gap-2 mb-2">
-                                <!-- Тут будуть відображатися вибрані жанри -->
+                                <!-- Selected genres will be displayed here -->
                             </div>
                             <input
                                 type="text"
@@ -95,6 +114,10 @@
                         </div>
                         <!-- Hidden field for genre transfer -->
                         <input type="hidden" name="genres" id="selected-genre-ids" value="[]">
+                        <!-- Displaying an error message -->
+                        @if ($errors->has('genres'))
+                            <p class="text-red-500 text-sm mt-1">{{ $errors->first('genres') }}</p>
+                        @endif
                     </div>
 
                     <!-- Authorship -->

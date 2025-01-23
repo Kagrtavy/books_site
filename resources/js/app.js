@@ -45,6 +45,9 @@ document.addEventListener('DOMContentLoaded', function () {
 document.addEventListener('DOMContentLoaded', function () {
     const photoInput = document.getElementById('photo');
     const photoPreview = document.getElementById('photo-preview-img');
+    const clearButton = document.getElementById('clear-photo');
+
+    // Оновлення попереднього перегляду після завантаження фото
     photoInput.addEventListener('change', function () {
         const file = this.files[0];
         if (file) {
@@ -55,11 +58,23 @@ document.addEventListener('DOMContentLoaded', function () {
             };
             reader.readAsDataURL(file);
         } else {
-            photoPreview.src = '';
-            photoPreview.style.display = 'none';
+            clearPhotoPreview();
         }
     });
+
+    // Clear the photo upload field
+    clearButton.addEventListener('click', function () {
+        photoInput.value = '';
+        clearPhotoPreview();
+    });
+
+    // Function to clear the preview
+    function clearPhotoPreview() {
+        photoPreview.src = '';
+        photoPreview.style.display = 'none';
+    }
 });
+
 
 document.addEventListener('DOMContentLoaded', function () {
     const addChapterBtn = document.getElementById('add-chapter-btn');
