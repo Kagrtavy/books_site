@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Chapter;
 use App\Models\Publication;
-use Illuminate\Http\Request;
 use PhpOffice\PhpWord\IOFactory;
 use Illuminate\Http\UploadedFile;
+use App\Http\Requests\StoreChapterRequest;
 
 class ChapterController extends Controller
 {
@@ -20,12 +20,9 @@ class ChapterController extends Controller
         ]);
     }
 
-    public function store(Request $request, Publication $work)
+    public function store(StoreChapterRequest $request, Publication $work)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:100',
-            'file' => 'required|mimes:docx|max:10240',
-        ]);
+        $validated = $request->validated();
         $fileName = $this->generateFileName($validated['name'], $request->file('file'));
         $filePath = $this->saveChapterFile($request->file('file'), $fileName, $work->name);
         Chapter::create([

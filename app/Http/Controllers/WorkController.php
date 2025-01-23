@@ -7,6 +7,7 @@ use App\Models\Rating;
 use App\Models\Source;
 use Illuminate\Http\Request;
 use App\Models\Genre;
+use App\Http\Requests\StoreWorkRequest;
 
 class WorkController extends Controller
 {
@@ -29,24 +30,10 @@ class WorkController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StoreWorkRequest  $request)
     {
-        $this->handleGenres($request);
-        $validated = $request->validate([
-            'name' => 'required|string|max:100',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'type' => 'required|in:Original work,Based on',
-            'authorship' => 'required|in:The work of your authorship,Translation',
-            'author' => 'nullable|string|max:150',
-            'work_link' => 'nullable|url|max:255',
-            'source_id' => 'nullable',
-            'new_source' => 'nullable|string|max:255|required_if:source_id,new',
-            'genres' => 'required|array|exists:genres,id',
-            'rating_id' => 'required|exists:ratings,id',
-            'status' => 'required|in:In progress,Completed,Frozen',
-            'size' => 'required|in:min,mid,max',
-            'description' => 'nullable|string',
-        ]);
+//        $this->handleGenres($request);
+        $validated = $request->validated();
         $this->handleSource($validated);
         $this->handlePhoto($request, $validated);
         $validated['user_id'] = auth()->id();
@@ -58,14 +45,14 @@ class WorkController extends Controller
         return redirect()->route('chapters.create', $work);
     }
 
-    protected function handleGenres(Request $request)
-    {
-        if (is_string($request->genres)) {
-            $request->merge([
-                'genres' => json_decode($request->genres, true),
-            ]);
-        }
-    }
+//    protected function handleGenres(Request $request)
+//    {
+//        if (is_string($request->genres)) {
+//            $request->merge([
+//                'genres' => json_decode($request->genres, true),
+//            ]);
+//        }
+//    }
 
     private function handleSource(array &$validated)
     {
