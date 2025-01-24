@@ -8,6 +8,7 @@ use App\Models\Source;
 use Illuminate\Http\Request;
 use App\Models\Genre;
 use App\Http\Requests\StoreWorkRequest;
+use App\Http\Requests\UpdateWorkRequest;
 
 class WorkController extends Controller
 {
@@ -32,7 +33,7 @@ class WorkController extends Controller
         ]);
     }
 
-    public function store(StoreWorkRequest  $request)
+    public function store(StoreWorkRequest $request)
     {
         $validated = $request->validated();
         $this->handleSource($validated);
@@ -71,12 +72,29 @@ class WorkController extends Controller
         }
     }
 
+    public function edit(Publication $work)
+    {
+        $sources = Source::all();
+        $ratings = Rating::all();
+        return view('pages.edit-work', [
+            'work' => $work,
+            'sources' => $sources,
+            'ratings' => $ratings
+        ]);
+    }
+
+    public function update(UpdateWorkRequest  $request, Publication $work)
+    {
+        $validated = $request->validated();
+//        $this->handlePhoto($request, $validated);
+        $work->update($validated);
+        return redirect()->route('user.works');
+    }
+
     public function destroy(Publication $work)
     {
         $work->chapters()->delete();
-
         $work->delete();
-
-        return redirect()->route('user.works')->with('success', 'Work and its chapters have been deleted successfully.');
+        return redirect()->route('user.works');
     }
 }
