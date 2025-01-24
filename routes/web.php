@@ -49,3 +49,7 @@ Route::get('/author-page', [UserWorkController::class, 'index'])
     ->middleware('auth');
 
 Route::delete('/works/{work}', [WorkController::class, 'destroy'])->name('works.destroy');
+Route::get('/works/{work}/edit', [WorkController::class, 'edit'])->name('works.edit');
+Route::put('/works/{work}', [WorkController::class, 'update'])->name('works.update');
+
+Route::delete('/chapters/{chapter}', [ChapterController::class, 'destroy'])->name('chapters.destroy');

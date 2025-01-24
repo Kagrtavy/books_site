@@ -56,6 +56,15 @@
                     <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-4 mb-4">
                         <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">{{ $chapter->name }}</h3>
                         <p class="text-sm text-gray-700 dark:text-gray-300">File: {{ basename($chapter->text) }}</p>
+
+                        <!-- Delete Button -->
+                        <form action="{{ route('chapters.destroy', $chapter) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this chapter?');" class="mt-2">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="px-4 py-2 bg-red-500 text-white font-semibold rounded-md hover:bg-red-600">
+                                Delete
+                            </button>
+                        </form>
                     </div>
                 @endforeach
             </div>

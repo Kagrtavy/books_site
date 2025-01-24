@@ -7,6 +7,7 @@ use App\Models\Publication;
 use PhpOffice\PhpWord\IOFactory;
 use Illuminate\Http\UploadedFile;
 use App\Http\Requests\StoreChapterRequest;
+use Illuminate\Support\Facades\Storage;
 
 class ChapterController extends Controller
 {
@@ -68,5 +69,15 @@ class ChapterController extends Controller
             }
         }
         return $text;
+    }
+
+    public function destroy(Chapter $chapter)
+    {
+        $this->authorize('delete', $chapter);
+        if ($chapter->text && Storage::disk('public')->exists($chapter->text)) {
+            Storage::disk('public')->delete($chapter->text);
+        }
+        $chapter->delete();
+        return redirect()->back();
     }
 }

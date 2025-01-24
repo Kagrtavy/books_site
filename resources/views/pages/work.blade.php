@@ -13,6 +13,16 @@
         </a>
     </div>
 
+    <!-- Chapters Edit Button (Visible only to the author) -->
+    @if (auth()->id() === $work->user_id)
+        <div class="mt-4 max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <a href="{{ route('chapters.create', $work) }}"
+               class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600">
+                Chapters Edit
+            </a>
+        </div>
+    @endif
+
     <!-- Information about the work -->
     <div class="py-4" style="padding-bottom: 0">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
