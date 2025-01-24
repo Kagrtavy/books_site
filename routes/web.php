@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\WorkController;
 use App\Http\Controllers\ChapterController;
+use App\Http\Controllers\UserWorkController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,3 +44,8 @@ Route::get('/works/{work}', [WorkController::class, 'show'])->name('works.show')
 
 Route::get('/chapter/{chapter}', [ChapterController::class, 'show'])->name('chapter.show');
 
+Route::get('/author-page', [UserWorkController::class, 'index'])
+    ->name('user.works')
+    ->middleware('auth');
+
+Route::delete('/works/{work}', [WorkController::class, 'destroy'])->name('works.destroy');

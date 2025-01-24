@@ -7,7 +7,7 @@
 
     <!-- Back Button -->
     <div class="mt-4 max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <a href="{{ route('home') }}"
+        <a href="{{ route($redirect) }}"
            class="px-4 py-2 bg-gray-500 text-white font-semibold rounded-md hover:bg-gray-600">
             Back
         </a>
