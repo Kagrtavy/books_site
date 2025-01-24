@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\Storage;
 
 class ChapterController extends Controller
 {
+    /**
+     * shows form for chapters
+     * @param Publication $work
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     */
     public function create(Publication $work)
     {
         $chapters = $work->chapters;
@@ -21,6 +26,12 @@ class ChapterController extends Controller
         ]);
     }
 
+    /**
+     * adds new chapters
+     * @param StoreChapterRequest $request
+     * @param Publication $work
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(StoreChapterRequest $request, Publication $work)
     {
         $validated = $request->validated();
@@ -34,6 +45,11 @@ class ChapterController extends Controller
         return redirect()->route('chapters.create', $work);
     }
 
+    /**
+     * shows chapter
+     * @param Chapter $chapter
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     */
     public function show(Chapter $chapter)
     {
         $filePath = storage_path('app/public/' . $chapter->text);
@@ -44,6 +60,12 @@ class ChapterController extends Controller
         ]);
     }
 
+    /**
+     * renames file for chapter
+     * @param string $originalName
+     * @param UploadedFile $file
+     * @return string
+     */
     function generateFileName(string $originalName, UploadedFile $file): string
     {
         $cleanedName = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $originalName);
@@ -51,12 +73,24 @@ class ChapterController extends Controller
         return $cleanedName . '.' . $fileExtension;
     }
 
+    /**
+     * saves docx chapter file
+     * @param UploadedFile $file
+     * @param string $fileName
+     * @param string $workName
+     * @return string
+     */
     protected function saveChapterFile(UploadedFile $file, string $fileName, string $workName): string
     {
         $chapterDirectory = 'works/' . $workName;
         return $file->storeAs($chapterDirectory, $fileName, 'public');
     }
 
+    /**
+     * gets text from docx for chapter
+     * @param string $filePath
+     * @return string
+     */
     protected function getChapterText(string $filePath): string
     {
         $phpWord = IOFactory::load($filePath);
@@ -71,6 +105,12 @@ class ChapterController extends Controller
         return $text;
     }
 
+    /**
+     * deletes chapter
+     * @param Chapter $chapter
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function destroy(Chapter $chapter)
     {
         $this->authorize('delete', $chapter);

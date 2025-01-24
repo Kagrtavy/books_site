@@ -8,6 +8,10 @@ use App\Models\Publication;
 
 class UserWorkController extends Controller
 {
+    /**
+     * shows all user works
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     */
     public function index()
     {
         $works = Publication::where('user_id', Auth::id())

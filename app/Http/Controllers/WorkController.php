@@ -12,6 +12,10 @@ use App\Http\Requests\UpdateWorkRequest;
 
 class WorkController extends Controller
 {
+    /**
+     * shows form for new work
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     */
     public function create()
     {
         $sources = Source::all();
@@ -24,6 +28,12 @@ class WorkController extends Controller
         ]);
     }
 
+    /**
+     * shows work page
+     * @param Publication $work
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     */
     public function show(Publication $work, Request $request)
     {
         $redirect = $request->query('redirect', 'home');
@@ -33,6 +43,11 @@ class WorkController extends Controller
         ]);
     }
 
+    /**
+     * stores work
+     * @param StoreWorkRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(StoreWorkRequest $request)
     {
         $validated = $request->validated();
@@ -47,6 +62,11 @@ class WorkController extends Controller
         return redirect()->route('chapters.create', $work);
     }
 
+    /**
+     * choosing or adding source
+     * @param array $validated
+     * @return void
+     */
     private function handleSource(array &$validated)
     {
         if ($validated['source_id'] === 'new' && !empty($validated['new_source'])) {
@@ -55,6 +75,12 @@ class WorkController extends Controller
         }
     }
 
+    /**
+     * adds photo for work
+     * @param Request $request
+     * @param array $validated
+     * @return void
+     */
     private function handlePhoto(Request $request, array &$validated)
     {
         if ($request->hasFile('photo')) {
@@ -64,6 +90,11 @@ class WorkController extends Controller
         }
     }
 
+    /**
+     * creates directory for specific work
+     * @param string $workName
+     * @return void
+     */
     private function createWorkDirectory(string $workName)
     {
         $workDirectory = storage_path('app/public/works/' . $workName);
@@ -72,6 +103,11 @@ class WorkController extends Controller
         }
     }
 
+    /**
+     * shows edit page for work
+     * @param Publication $work
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     */
     public function edit(Publication $work)
     {
         $sources = Source::all();
@@ -83,14 +119,24 @@ class WorkController extends Controller
         ]);
     }
 
+    /**
+     * changes some work info
+     * @param UpdateWorkRequest $request
+     * @param Publication $work
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function update(UpdateWorkRequest  $request, Publication $work)
     {
         $validated = $request->validated();
-//        $this->handlePhoto($request, $validated);
         $work->update($validated);
         return redirect()->route('user.works');
     }
 
+    /**
+     * deletes work
+     * @param Publication $work
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function destroy(Publication $work)
     {
         $work->chapters()->delete();

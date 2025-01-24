@@ -14,6 +14,12 @@ class ChapterPolicy
     {
         //
     }
+
+    /**
+     * @param User $user
+     * @param Chapter $chapter
+     * @return bool
+     */
     public function delete(User $user, Chapter $chapter): bool
     {
         return $user->id === $chapter->publication->user_id;

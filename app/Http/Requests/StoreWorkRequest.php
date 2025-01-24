@@ -38,6 +38,9 @@ class StoreWorkRequest extends FormRequest
         ];
     }
 
+    /**
+     * @return void
+     */
     public function prepareForValidation()
     {
         if (is_string($this->genres)) {
