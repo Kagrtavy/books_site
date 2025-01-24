@@ -12,7 +12,7 @@ class Publication extends Model
     protected $fillable = [
         'name', 'photo', 'user_id', 'type', 'authorship',
         'author', 'work_link', 'source_id', 'rating_id',
-        'status', 'size', 'description'
+        'status', 'size', 'description', 'created_at'
     ];
 
     public function rating()
@@ -22,8 +22,9 @@ class Publication extends Model
 
     public function chapters()
     {
-        return $this->hasMany(Chapter::class);
+        return $this->hasMany(Chapter::class, 'publication_id');
     }
+
     public function genres()
     {
         return $this->belongsToMany(Genre::class, 'genre_publication');

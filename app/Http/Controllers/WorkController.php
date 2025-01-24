@@ -23,16 +23,17 @@ class WorkController extends Controller
         ]);
     }
 
-    public function show(Publication $work)
+    public function show(Publication $work, Request $request)
     {
+        $redirect = $request->query('redirect', 'home');
         return view('pages.work', [
-            'work' => $work
+            'work' => $work,
+            'redirect' => $redirect
         ]);
     }
 
     public function store(StoreWorkRequest  $request)
     {
-//        $this->handleGenres($request);
         $validated = $request->validated();
         $this->handleSource($validated);
         $this->handlePhoto($request, $validated);
@@ -44,15 +45,6 @@ class WorkController extends Controller
         $this->createWorkDirectory($work->name);
         return redirect()->route('chapters.create', $work);
     }
-
-//    protected function handleGenres(Request $request)
-//    {
-//        if (is_string($request->genres)) {
-//            $request->merge([
-//                'genres' => json_decode($request->genres, true),
-//            ]);
-//        }
-//    }
 
     private function handleSource(array &$validated)
     {
@@ -77,5 +69,14 @@ class WorkController extends Controller
         if (!file_exists($workDirectory)) {
             mkdir($workDirectory, 0755, true);
         }
+    }
+
+    public function destroy(Publication $work)
+    {
+        $work->chapters()->delete();
+
+        $work->delete();
+
+        return redirect()->route('user.works')->with('success', 'Work and its chapters have been deleted successfully.');
     }
 }

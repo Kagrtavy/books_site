@@ -13,3 +13,17 @@
     height: 310px;
     object-fit: cover;
 }
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.main-content {
+    flex-grow: 1;
+}
+
